@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        
+        <!-- Bootstrap-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous" />
+        <!-- DataTable -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
+        <!-- Font Awesome -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+            integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="/static/assets/css/style.css"/>
+    </head>
+    <body>
+
+
+        
+        <div class="container my-4">
+            <div class="row">
+                <div class='background-crud' style="background-color: white;">
+                    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                        <table id="datatable_users" class="table table-striped">
+                            <thead>
+                                <tr>
+
+                                
+                                    <div class="col-md-12">
+
+                                        <a href="{{ url_for('registerLawyer') }}" title="Registrar nuevo Carro" class="btn btn-primary btn-lg btn-block btn-sm mb-2" style="float:right">
+                                        <i class="fa-sharp fa-solid fa-gavel"></i>
+                                    Nuevo Registro de Abogado
+                                        </a>
+                                    </div>
+
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Orden</th>
+                                                    <!-- base de datos login_python (id)-->
+                                                    <th scope="col">Usuario</th>
+                                                    <!-- base de datos login_python (nombre)-->
+                                                    <th scope="col">DNI</th>
+                                                    <!-- base de datos login_python (DNI)-->
+                                                    <th scope="col">Fecha Registro</th>
+                                                    <!-- base de datos login_python (create_at) -->
+                                                    <th scope='col'>Tipo de caso</th>
+                                                    <!-- base de datos expediente(tipo_caso) -->
+                                                    <th scope="col">C. expediente</th>
+                                                    <!-- base de datos expediente (c_epediente) -->
+                                                    <th scope="col">Expediente</th>
+                                                    <!-- base de datos expediente (archivo_adjunto) -->
+                                                    <th scope="col">Especialidad</th>
+                                                    <th scope="col">Visualizar</th>
+                                                    <th scope="col">Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            <!-- llenar con base de datos -->
+                                            <!-- aqui va el for para llenar los datos  -->
+                                            {% for element in miData %}
+                                            {% with urlCliente = '/static/assets/expedientes/' %}
+                                                <tr id=element.id>
+                                                    <th scope="row">{{ loop.index }}</th>
+                                                    <!--<td>element[nombre_completo]</td>-->
+                                                    <td>{{ element.nombre_completo }}</td>
+                                                    <td>{{ element.DNI}}</td>
+                                                    <td>{{ element.create_at}}</td>
+                                                    <td>{{ element.tipo_caso}}</td>
+                                                    <td>{{ element.c_expediente }}</td>                                     
+                                                
+                                                    <td>{% if(element.archivo_adjunto !="") %}
+                                                        <img src="{{ urlCliente }}{{ element.archivo_adjunto }}" class="sin_foto_mini" alt="{{ element.nombre_completo }}">
+                                                        {% else %}
+                                                        <img src="{{ urlCliente }}sin_foto.jpg" class="sin_foto_mini" alt="coche">
+                                                        {% endif %}
+                                                    </td>
+
+                                                    <td>
+                                                        <select name="live_user_id" class="form-control" style="height: 28px;min-width: 100px;font-size: 10px;padding-left: 0;padding-right: 0;">
+                                                        {% if element.area != None %}
+                                                        <option>{{ element.area }}</option>
+                                                        {% else %}
+                                                        <option>area</option>
+                                                        {% for ar in area %}
+                                                        <option>{{ element.area }}</option>
+                                                        {% endfor %}
+                                                        {% endif %}
+                                                        </select>
+                                                        <select name="live_user_id" class="form-control" style="height: 28px;min-width: 100px;font-size: 10px;padding-left: 0;padding-right: 0;">
+                                                        {% if element.enfoque != None %}
+                                                        <option>{{ element.enfoque }}</option>
+                                                        {% else %}
+                                                        <option>Enfoque</option>
+                                                        {%for enfoq in enfoque %}
+                                                        <option>{{ element.enfoque }}</option>
+                                                        <!--<option value="">{{ element.enfoque }}</option>-->
+                                                        {% endfor %}
+                                                        {% endif %}
+                                                        </select>
+                                                        <select name="live_user_id" class="form-control" style="height: 28px;min-width: 100px;font-size: 10px;padding-left: 0;padding-right: 0;">
+                                                        {% if element.abogado != None %}
+                                                        <option>{{ element.abogado }}</option>
+                                                        {% else %}
+                                                        <option>Asig. Abogado</option>
+                                                        {% for abogado in miLawyer %}
+                                                        <option>{{ abogado.ABOGADOS }}</option>
+                                                        {% endfor %}
+                                                        {% endif %}
+                                                        </select>
+
+                                                    </td>
+                                                    <td>
+                                                        <span style="display: flex; justify-content:space-between;">
+                                                            <a href="{{ url_for('viewDetalleCliente', idCliente = element.id ) }}" type="button"
+                                                            class="btn btn-warning btn-sm" tooltip="Ver Registro">
+                                                            <i class="bi bi-eye"></i>
+                                                            Ver
+                                                            </a>
+                                                    </td>
+                                                    <td>
+                                                            <a href="" class="btn btn-info btn-sm"
+                                                            tooltip="Actualizar Registro">
+                                                            <i class="bi bi-arrow-clockwise"></i>
+                                                            Actualizar
+                                                            </a>
+                                                            <a href="#" id="id_{{ element.id }}" data-foto="element.archivo_adjunto" onclick="eliminarCarroJavaScript('{{ element.id }}');" class="btn btn-danger btn-sm"
+                                                            tooltip="Eliminar Registro">
+                                                            <i class="bi bi-trash3"></i>
+                                                            Eliminar
+                                                            </a>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            {% endwith %}
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>

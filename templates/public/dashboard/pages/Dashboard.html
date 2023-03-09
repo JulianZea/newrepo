@@ -1,0 +1,38 @@
+<div class="row justify-content-center">
+  <div class="col-md-12 mb-2">
+    <h1 class="text-center">
+      Hola bienvenidos a la corporación 💼 GBS 🧑📝
+      <hr />
+    </h1>
+    {% if(dataLogin.tipoLogin ==1) %}
+    <p class="text-center">
+      Hola Soy <strong> {{ dataLogin.nombre }},</strong> Administrador del
+      Proyecto.💻
+    </p>
+
+    {% block body %}
+
+    {% include 'public/dashboard/pages/administrador.html' %}
+
+    {% endblock %}
+
+
+    {% elif(dataLogin.tipoLogin ==3) %}
+    <p class="text-center">
+      Hola Soy <strong> {{ dataLogin.nombre }},</strong> Abogado de la Corporación.📚
+    </p>
+    
+
+    {% include 'public/dashboard/pages/abogados.html' %}
+
+    
+
+    {% else %}
+    <p class="text-center">
+      Hola mi nombre es <strong>{{ dataLogin.nombre }},</strong> soy un cliente.
+    </p>
+    {% include 'public/dashboard/pages/cliente.html' %}
+    {% endif %}
+  </div>
+  
+</div>
