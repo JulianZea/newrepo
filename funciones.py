@@ -49,7 +49,7 @@ def dataPerfilUsuario():
     return datosUsuario
 
 
-#Creando una funcion para obtener la lista de carros.
+#Creando una funcion para obtener la lista de cliente.
 def listaCliente():
     conexion_MySQLdb = connectionBD() #creando mi instancia a la conexion de BD
     cur      = conexion_MySQLdb.cursor(dictionary=True)
@@ -64,7 +64,7 @@ def listaCliente():
     return resultadoBusqueda
 
 
-#Creando una funcion para obtener la lista de carros.
+#Creando una funcion para obtener la lista de cliente.
 def listaAbogados():
     conexion_MySQLdb = connectionBD() #creando mi instancia a la conexion de BD
     cur      = conexion_MySQLdb.cursor(dictionary=True)

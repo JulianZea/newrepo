@@ -258,6 +258,5 @@ def formViewUpdate(id):
         return render_template('public/dashboard/pages/administrador.html', miData = listaCliente(), msg = 'Metodo HTTP incorrecto', tipo=1, dataInfo = resultData())"""
 
 
-
 if __name__ == "__main__":
     app.run(debug=True, port=8000)

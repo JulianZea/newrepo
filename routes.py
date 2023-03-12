@@ -54,10 +54,10 @@ def viewDetalleCliente(idCliente):
         resultData = detallesdelCliente(idCliente) #Funcion que almacena los detalles del cliente
         
         if resultData:
-            return render_template('public/dashboard/pages/view.html', infoCliente = resultData, msg='Detalles del Cliente', tipo=1, dataLogin = dataLoginSesion())
-        else:
-            return render_template('public/dashboard/pages/view.html', msg='No existe el Cliente', tipo=1, dataLogin = dataLoginSesion())
-    return redirect(url_for('inicio'))
+            return render_template('public/dashboard/pages/detalledeexpediente.html', infoCliente = resultData, msg='Detalles del Cliente', tipo=1, dataLogin = dataLoginSesion())
+        #lse:
+        return render_template('public/dashboard/pages/detalledeexpediente.html', msg='No existe el Cliente', tipo=1, dataLogin = dataLoginSesion())
+# return redirect(url_for('inicio'))
 
 #RUTAS
 #@app.route('/registrar-abogado', methods=['GET','POST'])
