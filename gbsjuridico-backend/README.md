@@ -45,3 +45,13 @@ En Python, podemos usar los siguientes módulos para comunicarnos con MySQL.
 5  OurSQL
 
 
+Usuarios de prueba:
+    Administrador:
+        fanny@gmail.com
+        corporacion
+    Abogado:
+        andre@gmail.com
+        andre
+    Cliente
+        carlosC@gmail.com
+        carlos

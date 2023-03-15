@@ -5,8 +5,8 @@ import mysql.connector
 def connectionBD():
     mydb = mysql.connector.connect(
         host ="localhost",
-        user ="julian",
-        passwd ="julian",
+        user ="root",
+        passwd ="MYSQL$q1w2e3r4.",
         database = "corporacion_gbs",
         port='3306'
         )
