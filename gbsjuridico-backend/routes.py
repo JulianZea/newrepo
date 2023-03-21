@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, session
+from flask_cors import CORS
 from funciones import *  #Importando mis Funciones
 
 
 #Declarando nombre de la aplicación e inicializando, crear la aplicación Flask
 app = Flask(__name__)
+CORS(app)
 application = app
 
 
