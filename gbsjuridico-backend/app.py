@@ -7,6 +7,7 @@ from conexionBD import *  #Importando conexion BD
 from funciones import *  #Importando mis Funciones
 from routes import * #Vistas
 
+
 import re
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -15,7 +16,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 def loginUser():
     conexion_MySQLdb = connectionBD()
     if 'conectado' in session:
-        return render_template('public/dashboard/home.html', dataLogin = dataLoginSesion(), miData = listaCliente(), miLawyer = listaAbogados(), infoCliente = detallesdelCliente(4))
+        abogado = dataLoginSesion()
+        if (abogado["tipoLogin"] == 3):
+            return render_template('public/dashboard/home.html', dataLogin = dataLoginSesion(), miData = listaCliente(abogado["idLogin"]), miLawyer = listaAbogados(), infoCliente = detallesdelCliente(abogado["idLogin"]))
+        elif (abogado["tipoLogin"] == 2):
+            return render_template('public/dashboard/home.html', dataLogin = dataLoginSesion(), miData = listaCliente(), miLawyer = listaAbogados(), infoCliente = detallesdelCliente(abogado["idLogin"]))
+        else:
+            return render_template('public/dashboard/home.html', dataLogin = dataLoginSesion(), miData = listaCliente(), miLawyer = listaAbogados(), infoCliente = detallesdelCliente(abogado["idLogin"]))
     else:
         msg = ''
         if request.method == 'POST' and 'email' in request.form and 'password' in request.form:
@@ -102,7 +109,7 @@ def registerUser():
             cursor.close()
             msg = 'Cuenta creada correctamente!'
 
-        return render_template('public/dashboard/pages/administrador.html', msjAlert = msg, typeAlert=1, dataPaises = listaPaises())
+        return render_template('public/modulo_login/index.html', msjAlert = msg, typeAlert=1, dataPaises = listaPaises())
     return render_template('public/layout.html', dataLogin = dataLoginSesion(), msjAlert = msg, typeAlert=0)
 
 
@@ -212,28 +219,44 @@ def registerLawyer():
     return render_template('public/dashboard/pages/addAbogado.html', dataLogin = dataLoginSesion(), msjAlert = msg, typeAlert=0, dataPaises = listaPaises())
 
 
-"""#actualizar cliente
+#update de cliente
+@app.route('/form-update-cliente/<string:id>', methods=['GET','POST'])
+def formViewUpdate(id):
+    if request.method == 'GET':
+        resultData = updateCliente(id)
+        if resultData:
+            return render_template('public/dashboard/pages/update.html',  dataInfo = resultData, dataLogin = dataLoginSesion(), miLawyer = listaAbogados(), areas = listfocusbyarea())
+        else:
+            return render_template('public/dashboard/pages/administrador.html', miData = listaCliente(), msg='No existe el cliente', tipo= 1, dataInfo = resultData())
+    else:
+        return render_template('public/dashboard/pages/administrador.html', miData = listaCliente(), msg = 'Metodo HTTP incorrecto', tipo=1, dataInfo = resultData())
+
+
+
+#verificar la actualización cliente
 @app.route('/actualizar-cliente/<string:idCliente>', methods=['POST'])
 def  formActualizarCliente(idCliente):
     if request.method == 'POST':
-        nombre_completo           = request.form['nombre_completo']
+        nombre           = request.form['nombre']
+        apellido           = request.form['apellido']
         DNI          = request.form['DNI']
+        Telefono          = request.form['Telefono']
         create_at            = request.form['create_at']
         tipo_caso           = request.form['tipo_caso']
         c_expediente         = request.form['c_expediente']
-        archivo_adjunto        = request.form['archivo_adjunto']
+        # archivo_adjunto        = request.form['archivo_adjunto']
         area        = request.form['area']
         enfoque        = request.form['enfoque']
         abogado        = request.form['abogado']
 
         #Script para recibir el archivo (foto)
-        if(request.files['foto']):
-            file     = request.files['foto']
-            fotoForm = recibeFoto(file)
-            resultData = recibeActualizarCliente(nombre_completo, DNI, create_at, tipo_caso, c_expediente, archivo_adjunto, area, enfoque, abogado, idCliente)
+        if(request.files['archivo_adjunto']):
+            file     = request.files['archivo_adjunto']
+            archivo_adjunto = recibeFoto(file)
+            resultData = recibeActualizarCliente(nombre, apellido, DNI, Telefono, create_at, tipo_caso, c_expediente, archivo_adjunto, area, enfoque, abogado, idCliente)
         else:
-            fotoCarro  ='sin_foto.jpg'
-            resultData = recibeActualizarCliente(nombre_completo, DNI, create_at, tipo_caso, c_expediente, archivo_adjunto, area, enfoque, abogado, idCliente)
+            archivo_adjunto  ='sin_foto.jpg'
+            resultData = recibeActualizarCliente(nombre, apellido, DNI, Telefono, create_at, tipo_caso, c_expediente, archivo_adjunto, area, enfoque, abogado, idCliente)
 
         if(resultData ==1):
             return render_template('public/dashboard/pages/administrador.html', miData = listaCliente(), msg='Datos del cliente actualizados', tipo=1, dataInfo = resultData)
@@ -241,21 +264,20 @@ def  formActualizarCliente(idCliente):
             msg ='No se actualizo el registro'
             return render_template('public/dashboard/pages/administrador.html', miData = listaCliente(), msg='No se pudo actualizar', tipo=1, dataInfo = resultData)
 
+def recibeFoto(file):
+    print(file)
+    basepath = os.path.dirname (__file__) #La ruta donde se encuentra el expediente actual
+    filename = secure_filename(file.filename) #Nombre original del expediente
 
+    #capturando extensión del archivo ejemplo: (.png, .jpg, .pdf ...etc)
+    extension           = os.path.splitext(filename)[1]
+    nuevoNombreFile     = file.filename
+    #print(nuevoNombreFile)
+    
+    upload_path = os.path.join (basepath, 'static/assets/expedientes', nuevoNombreFile) 
+    file.save(upload_path)
 
-
-
-#update de cliente
-@app.route('/form-update-cliente/<string:id>', methods=['GET','POST'])
-def formViewUpdate(id):
-    if request.method == 'GET':
-        resultData = updateCliente(id)
-        if resultData:
-            return render_template('public/dashboard/pages/update.html',  dataInfo = resultData)
-        else:
-            return render_template('public/dashboard/pages/administrador.html', miData = listaCliente(), msg='No existe el carro', tipo= 1, dataInfo = resultData())
-    else:
-        return render_template('public/dashboard/pages/administrador.html', miData = listaCliente(), msg = 'Metodo HTTP incorrecto', tipo=1, dataInfo = resultData())"""
+    return nuevoNombreFile
 
 
 if __name__ == "__main__":

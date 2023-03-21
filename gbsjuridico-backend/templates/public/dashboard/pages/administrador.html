@@ -112,9 +112,10 @@
                                                         <option>{{ element.abogado }}</option>
                                                         {% else %}
                                                         <option>Asig. Abogado</option>
+                                                        <!--
                                                         {% for abogado in miLawyer %}
                                                         <option>{{ abogado.ABOGADOS }}</option>
-                                                        {% endfor %}
+                                                        {% endfor %}-->
                                                         {% endif %}
                                                         </select>
 
@@ -128,7 +129,7 @@
                                                             </a>
                                                     </td>
                                                     <td>
-                                                            <a href="" class="btn btn-info btn-sm"
+                                                            <a href="{{ url_for('formViewUpdate', id = element.id ) }}" class="btn btn-info btn-sm"
                                                             tooltip="Actualizar Registro">
                                                             <i class="bi bi-arrow-clockwise"></i>
                                                             Actualizar

@@ -66,9 +66,10 @@ thead{
 .table>tbody {
     vertical-align: baseline !important;
 }
+/*esto hace que sea mayuscula
 input{
     text-transform: capitalize !important;
-}
+}*/
 .form-check-inline{
     float: left;
 }

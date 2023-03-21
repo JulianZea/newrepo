@@ -1,93 +1,94 @@
+
 <head>
-    <link rel="icon" href="{{url_for('static', filename ='assets/imgs/faviconlogo.ico')}}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ url_for('static', filename ='assets/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename ='assets/css/style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename ='assets/css/tooltip.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename ='assets/css/custom_alert.css') }}">
+  <link rel="icon" href="{{url_for('static', filename ='assets/imgs/faviconlogo.ico')}}" type="image/x-icon">
+  <link rel="stylesheet" href="{{ url_for('static', filename ='assets/css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename ='assets/css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename ='assets/css/tooltip.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename ='assets/css/custom_alert.css') }}">
 </head>
 
 {% block body %}
 
 
 <section>
-    <h2>
-        <a href="/" class="left" title="Volver"><i class="bi bi-arrow-left-circle"></i></a>
-        <a id="bloque-cliente">
-        Detalles del Cliente
-        </a>
-        <hr>
-      </h2>
-  
-      {% if (infoCliente) %}
-      
-      <!-- {{ infoCliente }} -->
-  
-  
-      <div class="card" style="width: 25rem;">
-        {% set urlCliente = '../../../static/assets/expedientes/' %}
-          {% if(infoCliente.archivo_adjunto) %}
-            <img src="{{ urlCliente }}{{ infoCliente.archivo_adjunto }}" class="card-img-top" alt="expediente">
-          {% else %}
-            <img src="{{ urlCliente }}sin_foto.jpg" class="card-img-top sin_foto" alt="expediente">
-          {% endif %}
-  
-          <div class="card-body">
-            <a href="{{ urlCliente }}{{ infoCliente.archivo_adjunto }}" download class="descargar-btn" class="card-title" id="bloque-vercompleto">
-              <h5> VER COMPLETO </h5>
-            </a>
-          </div>
-  
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">Cliente:<strong>{{ infoCliente.nombre_completo }}</strong></li>
-            <li class="list-group-item">Abogado:<strong>{{ infoCliente.abogado }}</strong></li>
-            <li class="list-group-item">Fecha de registro:<strong>{{ infoCliente.created_at }}</strong></li>
-            <li class="list-group-item">Tipo de caso: <strong>{{ infoCliente.tipo_caso }}</strong></li>
-            <li class="list-group-item">Número de Telefono: <strong>{{ infoCliente.Telefono }}</strong></li>
-            <li class="list-group-item">C. Expediente: <strong>{{ infoCliente.c_expediente }}</strong></li>
-            <li class="list-group-item">Descripción de caso: <strong>{{ infoCliente.escribe_su_caso }}</strong></li>
-        </ul>
-        </div>
-        <div class="chatbox">
-            <div class="message other-message">
-            <p>Buenos días, ¿en qué puedo ayudarle hoy?</p>
-            </div>
-            <div class="message self-message">
-          <p>Hola, gracias por atenderme. Sí, tuve un accidente la semana pasada.</p>
-        </div>
-        <div class="message other-message">
-          <p>Entiendo que ha tenido un accidente automovilístico. ¿Podría darme más detalles?</p>
-        </div>
-        <div class="message self-message">
-          <p>Iba por la avenida principal cuando otro auto me chocó por detrás.</p>
-        </div>
-        <div class="message other-message">
-          <p>Perfecto, tomaré su caso. Por favor, proporcione toda la documentación relacionada con el accidente.</p>
-        </div>
-        <div class="message self-message">
-          <p>Claro, enviaré toda la documentación por correo electrónico. Muchas gracias por su ayuda.</p>
-        </div>
-        <div class="input-box">
-          <input type="text" placeholder="escribe un mensaje...">
-        </div>
-      </div>
-    </body>
-        {% else %}
-        <div class="col-12">
-            <h2 class="text-center">
-              No existe el Cliente
-            </h2>
-        </div>
-      {% endif %}
-  
-  </section>
-  
-  
-  {% endblock %}
+  <h2>
+      <a href="/dashboard" class="left" title="Volver"><i class="bi bi-arrow-left-circle"></i></a>
+      <a id="bloque-cliente">
+      Detalles del Cliente
+      </a>
+      <hr>
+    </h2>
+
+    {% if (infoCliente) %}
     
-  </div>
-  
-    <script src="//code.tidio.co/58axzsuum5mwusx0m88lis6jdeq67lax.js" async></script>
-  
+    <!-- {{ infoCliente }} -->
+
+
+    <div class="card" style="width: 25rem;">
+      {% set urlCliente = '../../../static/assets/expedientes/' %}
+        {% if(infoCliente.archivo_adjunto) %}
+          <img src="{{ urlCliente }}{{ infoCliente.archivo_adjunto }}" class="card-img-top" alt="expediente">
+        {% else %}
+          <img src="{{ urlCliente }}sin_foto.jpg" class="card-img-top sin_foto" alt="expediente">
+        {% endif %}
+
+        <div class="card-body">
+          <a href="{{ urlCliente }}{{ infoCliente.archivo_adjunto }}" download class="descargar-btn" class="card-title" id="bloque-vercompleto">
+            <h5> VER COMPLETO </h5>
+          </a>
+        </div>
+
+      <ul class="list-group list-group-flush">
+          <li class="list-group-item">Cliente:<strong>{{ infoCliente.nombre_completo }}</strong></li>
+          <li class="list-group-item">Abogado:<strong>{{ infoCliente.abogado }}</strong></li>
+          <li class="list-group-item">Fecha de registro:<strong>{{ infoCliente.created_at }}</strong></li>
+          <li class="list-group-item">Tipo de caso: <strong>{{ infoCliente.tipo_caso }}</strong></li>
+          <li class="list-group-item">Número de Telefono: <strong>{{ infoCliente.Telefono }}</strong></li>
+          <li class="list-group-item">C. Expediente: <strong>{{ infoCliente.c_expediente }}</strong></li>
+          <li class="list-group-item">Descripción de caso: <strong>{{ infoCliente.escribe_su_caso }}</strong></li>
+      </ul>
+      </div>
+      <div class="chatbox">
+          <div class="message other-message">
+          <p>Buenos días, ¿en qué puedo ayudarle hoy?</p>
+          </div>
+          <div class="message self-message">
+        <p>Hola, gracias por atenderme. Sí, tuve un accidente la semana pasada.</p>
+      </div>
+      <div class="message other-message">
+        <p>Entiendo que ha tenido un accidente automovilístico. ¿Podría darme más detalles?</p>
+      </div>
+      <div class="message self-message">
+        <p>Iba por la avenida principal cuando otro auto me chocó por detrás.</p>
+      </div>
+      <div class="message other-message">
+        <p>Perfecto, tomaré su caso. Por favor, proporcione toda la documentación relacionada con el accidente.</p>
+      </div>
+      <div class="message self-message">
+        <p>Claro, enviaré toda la documentación por correo electrónico. Muchas gracias por su ayuda.</p>
+      </div>
+      <div class="input-box">
+        <input type="text" placeholder="escribe un mensaje...">
+      </div>
+    </div>
   </body>
-  </html>
+      {% else %}
+      <div class="col-12">
+          <h2 class="text-center">
+            No existe el Cliente
+          </h2>
+      </div>
+    {% endif %}
+
+</section>
+
+
+{% endblock %}
+  
+</div>
+
+  <!-- <script src="//code.tidio.co/58axzsuum5mwusx0m88lis6jdeq67lax.js" async></script> -->
+
+</body>
+</html>
