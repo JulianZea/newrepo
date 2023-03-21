@@ -85,10 +85,10 @@
                                                     </span>
                                                 </td>
                                                 <td>
-                                                        <a href="" class="btn btn-info btn-sm"
-                                                            tooltip="Actualizar Registro">
-                                                            <i class="bi bi-arrow-clockwise"></i>
-                                                            Actualizar
+                                                        <a href="{{ url_for('formViewUpdate', id = element.id ) }}" class="btn btn-info btn-sm"
+                                                        tooltip="Actualizar Registro">
+                                                        <i class="bi bi-arrow-clockwise"></i>
+                                                        Actualizar
                                                         </a>
                                                         <a href="#" id="id_{{ element.id }}" data-foto="element.archivo_adjunto" onclick="eliminarCarroJavaScript('{{ element.id }}');" class="btn btn-danger btn-sm"
                                                             tooltip="Eliminar Registro">

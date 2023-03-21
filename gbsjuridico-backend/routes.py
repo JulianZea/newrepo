@@ -27,7 +27,7 @@ def listClient():
 @app.route('/')
 def inicio():
     if 'conectado' in session:
-        return render_template('public/dashboard/home.html', dataLogin = dataLoginSesion(), miData = listaCliente(), miLawyer = listaAbogados())
+        return render_template('public/dashboard/home.html', dataLogin = dataLoginSesion(), miData = listaCliente(), miLawyer = listaAbogados(), dataInfo = updateCliente(), areas = listfocusbyarea())
     else:
         return render_template('public/modulo_login/index.html', dataPaises = listaPaises())
 
@@ -55,40 +55,11 @@ def viewDetalleCliente(idCliente):
         
         if resultData:
             return render_template('public/dashboard/pages/detalledeexpediente.html', infoCliente = resultData, msg='Detalles del Cliente', tipo=1, dataLogin = dataLoginSesion())
-        #lse:
+        #else:
         return render_template('public/dashboard/pages/detalledeexpediente.html', msg='No existe el Cliente', tipo=1, dataLogin = dataLoginSesion())
-# return redirect(url_for('inicio'))
-
-#RUTAS
-#@app.route('/registrar-abogado', methods=['GET','POST'])
-#def addAbogado():
-#    return render_template('public/dashboard/pages/addAbogado.html', dataLogin = dataLoginSesion(), dataPaises = listaPaises())
 
 
 
-
-#Registrando nuevo Abogado
-"""@app.route('/carro', methods=['POST'])
-def formAddCarro():
-    if request.method == 'POST':
-        marca               = request.form['marca']
-        modelo              = request.form['modelo']
-        year                = request.form['year']
-        color               = request.form['color']
-        puertas             = request.form['puertas']
-        favorito            = request.form['favorito']
-        
-        
-        if(request.files['foto'] !=''):
-            file     = request.files['foto'] #recibiendo el archivo
-            nuevoNombreFile = recibeFoto(file) #Llamado la funcion que procesa la imagen
-            resultData = registrarCarro(marca, modelo, year, color, puertas, favorito, nuevoNombreFile)
-            if(resultData ==1):
-                return render_template('public/dashboard/pages/Dashboard.html', miData = listaCliente(), msg='El Registro fue un éxito', tipo=1, dataLogin = dataLoginSesion())
-            else:
-                return render_template('public/dashboard/pages/Dashboard.html', msg = 'Metodo HTTP incorrecto', tipo=1, dataLogin = dataLoginSesion())   
-        else:
-            return render_template('public/dashboard/pages/Dashboard.html', msg = 'Debe cargar una foto', tipo=1, dataLogin = dataLoginSesion())"""
 
 
 

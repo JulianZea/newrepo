@@ -1,14 +1,25 @@
-<!-- {% extends 'public/dashboard/pages/Dashboard.html' %}
-{% block title %}Registrar Carro{% endblock %}
+<head>
+    <link rel="icon" href="{{url_for('static', filename ='assets/imgs/faviconlogo.ico')}}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename ='assets/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename ='assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename ='assets/css/tooltip.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename ='assets/css/custom_alert.css') }}">
+    <script src="{{ url_for('static', filename='assets/js/common.js') }}"></script>
+</head>
+{% extends 'public/dashboard/pages/Dashboard.html' %}
+{% block title %}Actualizar Cliente{% endblock %}
 
 {% block body %}
 
 
 <section>
     <h2>
-        <a href="/" class="left" title="Volver"><i class="bi bi-arrow-left-circle"></i></a>
-        Actualizar Información del Cliente
-        <hr>
+        <a href="/" class="left" title="Volver"><i class="bi bi-arrow-left-circle"></i>
+        </a>
+        <a id="bloque-cliente">
+            Actualizar Información del Cliente
+        </a>
     </h2>
 
     {% if (dataInfo) %}
@@ -17,81 +28,109 @@
         
         <div class="row">
             <div class="col">
-                <label for="marca">Cliente</label>
-                <input type="text" name="marca" value="{{ dataInfo.marca }}" class="form-control">
+                <label for="nombre">Nombre del cliente</label>
+                <input type="text" name="nombre" value="{{ dataInfo.nombre }}" class="form-control">
             </div>
             <div class="col">
-                <label for="modelo">Abogado</label>
-                <input type="text" name="modelo" value="{{ dataInfo.modelo }}" class="form-control">
+                <label for="apellido">Apellido del cliente</label>
+                <input type="text" name="apellido" value="{{ dataInfo.apellido }}" class="form-control">
+            </div>
+            <div class="col">
+                <label for="DNI">DNI</label>
+                <input type="text" name="DNI" value="{{ dataInfo.DNI }}" class="form-control">
             </div>
         </div>
 
         <div class="row">
             <div class="col">
-                <label for="year">Fecha de registro</label>
-                <input type="number" name="year" value="{{ dataInfo.year }}" class="form-control">
+                <label for="create_at">Fecha de registro</label>
+                <input type="text" name="create_at" value="{{ dataInfo.create_at }}" class="form-control">
+            </div>
+            <div class="col">
+                <label for="Telefono">Numeros de Telefono</label>
+                <input type="text" name="Telefono" value="{{ dataInfo.Telefono }}" class="form-control">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="tipo_caso"> Tipo de caso</label>
+                <input type="text" name="tipo_caso" value="{{ dataInfo.tipo_caso }}" class="form-control">
+            </div>
+            <div class="col">
+                <label for="c_expediente">C.expediente</label>
+                <input type="text" name="c_expediente" value="{{ dataInfo.c_expediente }}" class="form-control">
             </div>
 
+        </div>
+
+        <div class="row">
+            <div>
+                <h6 style="display: inline-block; text-align: center; width: 100%; margin-bottom: 10px;">Especialidad</h6>
+            </div>
             <div class="col">
-                <label for="color">Tipo de Caso</label>
-                {% with  colores = ["Rojo","Gris","Blanco","Plata"] %}
-                <select name="color" class="form-control">
-                    {% for color in colores %}
-                        {% if(color == dataInfo.color) %}
-                            <option value="{{ color }}" selected>{{ color }}</option>
-                        {% else %}
-                            <option value="{{ color }}">{{ color }}</option>
+                <label for="areas">Area</label>
+                <select class="form-control" name="area" id="area" onchange="mostrarEnfoques()">
+                {% if dataInfo.area != None %}
+                <option value="{{ dataInfo.area }}">{{ dataInfo.area }}</option>
+                {% endif %}
+                <!--<option> area </option>-->
+                <!--<option value="penal">Penal</option>
+                <option value="civil">Civil</option>
+                <option value="laboral">Laboral</option>-->
+                {% for ar in areas.keys() %}
+                    {% if ar != dataInfo.area %}
+                        <option value="{{ ar }}">{{ ar }}</option>
+                    {% endif %}
+                {% endfor %}
+                
+                </select>
+            </div>
+            <div class="col">
+                <label for="enfoque">Enfoque</label>
+                <select class="form-control" name="enfoque" id="enfoque">
+                    {% if dataInfo.enfoque != None %}
+                    <option value="{{ dataInfo.enfoque }}">{{ dataInfo.enfoque }}</option>
+                    {% endif %}
+                    <option> enfoque </option>
+                    {% for ar in areas[ dataInfo.area] %}
+                        {% if ar != dataInfo.enfoque %}
+                            <option value="{{ ar }}">{{ ar }}</option>
+                        {% endif %}
+                    {% endfor %}
+                    
+                </select>
+            </div>
+            <div class="col">
+                <label for="abogado">Abogado</label>
+                <select name="abogado" class="form-control" >
+                    {% if dataInfo.abogado != None %}
+                    <option>{{ dataInfo.abogado }}</option>
+                    {% endif %}
+                    <option>Asig. Abogado</option>
+                    {% for abogado in miLawyer %}
+                        {% if abogado.ABOGADOS != dataInfo.abogado %}
+                        <option>{{ abogado.ABOGADOS }}</option>
                         {% endif %}
                     {% endfor %}
                 </select>
-                {% endwith %}
             </div>
+            
         </div>
 
-        
-        <div class="row">
-            <div class="col">
-                <label for="puertas">Numeros de Telefono</label>
-                {% with  puertas = ['2','4'] %}
-                <select name="puertas" class="form-control">
-                    {% for puerta in puertas %}
-                        {% if(puerta == dataInfo.puertas) %}
-                            <option value="{{ puerta }}" selected> {{ puerta }}</option>
-                        {% else %}
-                            <option value="{{ puerta }}"> {{ puerta }}</option>
-                        {% endif %}
-                    {% endfor %}
-                </select>
-                {% endwith %}
-            </div>
-
-            <div class="col">
-                <label for="favorito">C. Expediente</label>
-                <br><br>
-                <div class="form-check form-check-inline">
-
-                    <input class="form-check-input" type="radio" name="favorito" value="Si" {{ dataInfo.favorito =='Si' and 'checked' or '' }}>
-                    <label class="form-check-label" for="favorito">Si</label>
-                </div>              
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="favorito" value="No" {{ 'checked' if dataInfo.favorito =='No' else '' }}>
-                    <label class="form-check-label" for="favorito">No</label>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            {% set urlCliente = '../../../static/assets/expedientes/' %}
-            <div class="col-md-6">
-                {% if(dataInfo.archivo_adjunto !="") %}
+        <br>
+        <div class="row" id="bei">
+            {% set urlCliente = '/static/assets/expedientes' %}
+            <div class="col-md-0">
+                {% if(dataInfo.foto !="") %}
                         <img src="{{ urlCliente }}{{ dataInfo.archivo_adjunto }}" class="foto_update" alt="{{ dataInfo.marca }}">
                     {% else %}
                         <img src="{{ urlCliente }}sin_foto.jpg" class="foto_update" alt="coche">
                 {% endif %}
             </div>
             <div class="col-md-6">
-                <label for="foto">Cambiar Foto del Carro</label>
-                <input type="file" name="foto" class="form-control-file" accept="image/*">
+                <label for="foto">Cambiar Foto del expediente</label>
+                <input type="file" name="archivo_adjunto" class="form-control-file" accept="/static/assets/expedientes">
             </div>
         </div>
         <hr>
@@ -101,11 +140,11 @@
     {% else %}
     <div class="col-12">
         <h2 class="text-center">
-            No existe el Coche
+            No existe el cliente
         </h2>
     </div>
 {% endif %}
 
 </section>
 
-{% endblock %}-->
+{% endblock %}

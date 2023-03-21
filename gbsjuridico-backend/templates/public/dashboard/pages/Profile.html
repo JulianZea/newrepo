@@ -7,9 +7,13 @@
 <div class="row justify-content-md-center mb-5">
 
     <div class="col-md-10 cajaLogin styFormDashboard">
-        <h2 class="text-center titleDashboard mt-3" style="color: black;">Editar mi Perfil <hr> </h2>
+        <h2>
+            <a href="/dashboard" class="left" title="Volver"><i class="bi bi-arrow-left-circle"></i>
+            </a>
+        </h2>
+        <h2 class="text-center titleDashboard mt-3" style="color: black;">
+            Editar mi Perfil <hr> </h2>
             <form action='{{url_for("actualizarMiPerfil",id=dataUser.id)}}' method="POST" autocomplete="off">
-           
             <div class="row">
                 <div class="col-md-6">
                     <label for="Nombre" class="form-label mt-3">Nombre de Usuario</label>
@@ -76,7 +80,6 @@
                     {% endif %}
                 </div>
             </div>
-     
             <div class="row text-center justify-content-md-center mt-4">
                 <div class="col-md-12 mt-3 mb-3">
                     <button type="submit" class="btn btn-primary btn-send">Guardar Cambios</button>
