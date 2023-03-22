@@ -33,12 +33,12 @@ def inicio():
     else:
         return render_template('public/modulo_login/index.html', dataPaises = listaPaises())
 
-@app.route('/login')
-def login():
-    if 'conectado' in session:
-        return render_template('public/dashboard/home.html', dataLogin = dataLoginSesion())
-    else:
-        return render_template('public/modulo_login/index.html', dataPaises = listaPaises())
+#@app.route('/login')
+#def login():
+#    if 'conectado' in session:
+#        return render_template('public/dashboard/home.html', dataLogin = dataLoginSesion())
+#    else:
+#        return render_template('public/modulo_login/index.html', dataPaises = listaPaises())
 
 
 #Ruta para editar el perfil del cliente

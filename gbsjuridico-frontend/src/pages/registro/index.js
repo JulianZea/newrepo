@@ -17,7 +17,6 @@ function RegistroPage() {
     const [apellidos, setApellidos] = useState('');
     const [correo, setCorreo] = useState('');
     const [documento, setDocumento] = useState('');
-    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [telefono, setTelefono] = useState('');
     const [direccion, setDireccion] = useState('');
@@ -42,13 +41,12 @@ function RegistroPage() {
         e.preventDefault();
         axios({
             method: 'post',
-            url: Constantes.API_URL + "/registerUser",
+            url: Constantes.API_URL + "/registro",
             data: {
                 nombres: nombres,
                 apellidos: apellidos,
                 correo: correo,
                 documento: documento,
-                username: username,
                 password: password,
                 telefono: telefono,
                 direccion: direccion,
@@ -60,30 +58,19 @@ function RegistroPage() {
             }
         })
             .then((response) => {
-                if (response && response.data) {
+                if (response && response.data && response.data.ok == true) {
                     Alertas.success('OK!', 'Datos grabados correctamente.');
                     setRedirect(true);
                     //setTimeout(() => {
                     //    setRedirect(true);
                     //}, 2000);
                 } else {
-                    //swal.fire({
-                    //    icon: 'error',
-                    //    title: 'Ups...',
-                    //    text: 'Usuario o contraseña incorrectos...'
-                    //});
                     Alertas.error('Ups...', 'Los datos no pudieron ser grabados...');
-                    setUsername('');
-                    setPassword('');
+                    //setUsername('');
+                    //setPassword('');
                 }
             })
             .catch((error) => {
-                //console.log(error);
-                //swal.fire({
-                //    icon: 'error',
-                //    title: 'Ups...',
-                //    text: 'Sucedió un problema!'
-                //});
                 Alertas.error('Ups...', 'Los datos no pudieron ser grabados...');
             });
     };

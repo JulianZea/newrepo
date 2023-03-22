@@ -1,5 +1,5 @@
 #Importando  flask y algunos paquetes
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 from datetime import date
 from datetime import datetime
 
@@ -10,6 +10,92 @@ from routes import * #Vistas
 
 import re
 from werkzeug.security import generate_password_hash, check_password_hash
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    content = request.json
+    username = content['username']
+    password = content['password']
+
+    conexion_MySQLdb = connectionBD()
+    cursor = conexion_MySQLdb.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM login_python WHERE email = %s", [username])
+    account = cursor.fetchone()
+
+    valido = False
+    if account:
+        if (check_password_hash(account['password'], password) or account['password'] == password):
+            valido = True
+
+    rtn = { 
+        "ok": valido,
+        "token": ''
+    }
+    return jsonify(rtn)
+
+@app.route('/registro', methods=['POST'])
+def registro():
+
+    
+    content = request.json
+    tipo_user                   = 2
+    nombres                      = content['nombres']
+    apellidos                    = content['apellidos']
+    correo                       = content['correo']
+    documento                       = content['documento']
+    Telefono                       = content['telefono']
+    Direccion                       = content['direccion']
+    password                    = content['password']
+    password2             = content['password2']
+    sexo                        = content['sexo']
+    tieneExpediente    = content['tieneExpediente']
+    paisNacimiento                        = content['paisNacimiento']
+    descripcionCaso                       = content['descripcionCaso']
+    create_at                   = date.today()
+    #current_time = datetime.datetime.now()
+
+    # Comprobando si ya existe la cuenta de Usuario con respecto al email
+    conexion_MySQLdb = connectionBD()
+    cursor = conexion_MySQLdb.cursor(dictionary=True)
+    cursor.execute('SELECT * FROM login_python WHERE email = %s', (correo,))
+    account = cursor.fetchone()
+    cursor.close() #cerrrando conexion SQL
+
+    msg = ''
+    if account:
+        msg = 'Ya existe el Email!'
+    elif password != password2:
+        msg = 'Disculpa, las clave no coinciden!'
+    elif not re.match(r'[^@]+@[^@]+\.[^@]+', correo):
+        msg = 'Disculpa, formato de Email incorrecto!'
+    elif not correo or not password or not password or not password2:
+        msg = 'El formulario no debe estar vacio!'
+    else:
+        # La cuenta no existe y los datos del formulario son válidos,
+        password_encriptada = generate_password_hash(password, method='sha256')
+        conexion_MySQLdb = connectionBD()
+        cursor = conexion_MySQLdb.cursor(dictionary=True)
+        cursor.execute('INSERT INTO login_python (tipo_user, nombre, apellido, email, DNI, Telefono, Direccion, password, sexo, pais, create_at, tiene_expediente, escribe_su_caso) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (tipo_user, nombres, apellidos, correo, documento, Telefono, Direccion, password_encriptada, sexo, paisNacimiento, create_at, tieneExpediente, descripcionCaso))
+        conexion_MySQLdb.commit()
+        cursor.close()
+        msg = 'Cuenta creada correctamente!'
+
+    if (msg == ''):
+        rtn = {
+            "ok": True
+        }
+    else:
+        rtn = {
+            "ok": False,
+            "error": {
+                "code": 101,
+                "message": msg
+            }
+        }
+
+    return jsonify(rtn)
+
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])

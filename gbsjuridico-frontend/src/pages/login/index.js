@@ -31,21 +31,17 @@ const LoginPage = () => {
         e.preventDefault();
         axios({
             method: 'post',
-            url: Constantes.API_URL + "/loginUser",
+            url: Constantes.API_URL + "/login",
             data: {
                 username: username,
                 password: password
             }
         })
             .then((response) => {
-                if (response && response.data) {
+                if (response && response.data && response.data.ok == true) {
+                    Alertas.success('Muy Bien!', 'Bienvenido al sistema.');
                     setRedirect(true);
                 } else {
-                    //swal.fire({
-                    //    icon: 'error',
-                    //    title: 'Ups...',
-                    //    text: 'Usuario o contraseña incorrectos...'
-                    //});
                     Alertas.error('Ups...', 'Usuario o contraseña incorrectos...');
                     setUsername('');
                     setPassword('');
